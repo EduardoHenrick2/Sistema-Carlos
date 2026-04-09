@@ -36,3 +36,38 @@ function calcResultados(alunos) {
   return {alunosMedia, mediaTurma, mediasPorDisciplina, acimeMedia, frequenciaBaixa};
 }
 
+//Componente: Formulario aluno
+//Foi criado de passos em passos
+
+const TOTAL_PASSOS = 7; //OBJETIVO NOME +5 NOSTAS + FREQUENCIA
+const alunoVazio = () => ({nome: "", notas: [0, 0, 0, 0, 0], frequencia: 75 });
+
+function FormularioAluno({ onAdicionar, onCancelar}) {
+  const [passo, setPasso] = useState(0);
+  const [aluno, setAluno] = useState(alunoVazio());
+  const [erro, setErro] = useState("");
+
+  function validarPasso() {
+    if(passo === 0) {
+      if (!aluno.nome.trim()) {
+        setErro("Digite o nome do aluno");
+        return false;
+      }
+      else if (passo => 1 && passo <= 5) {
+        const nota = aluno.notas[passo - 1];
+        if (isNaN(nota) || nota < 0 || nota > 10 ) {
+          setErro("A nota deve ser entre 0 e 10.");
+          return false;
+        }
+      }
+      else if (passo === 6) {
+        if(isNaN(aluno.frequencia) || aluno.frequencia < 0 || aluno.frequencia > 100) {
+          setErro("A frequência deve ser entre 0 e 100.");
+          return false;
+        }
+      }
+      setErro(""); 
+      return true;
+    }
+  }
+}
