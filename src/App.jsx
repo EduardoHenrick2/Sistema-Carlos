@@ -69,5 +69,51 @@ function FormularioAluno({ onAdicionar, onCancelar}) {
       setErro(""); 
       return true;
     }
+
+    function avancar() {
+      if (!validarPasso())
+        return;
+      if(passo < TOTAL_PASSOS - 1) {
+        setPasso(Passo + 1);
+      }
+    
+      else {
+        onAdicionar({ id: Date.now(), nome: aluno.nome.trim(), notas: aluno.notas.map(Number), frequencia: Number(aluno.frequencia)});
+        setAluno(alunoVazio());
+        setPasso(0);
+      }
+    }
+    
+    function voltar () {
+      setErro("");
+      setPasso(passo - 1);
+    }
+    
+    function setNota(i , valor) {
+      const novas = {...aluno.notas};
+      novas[i] = valor;
+      setAluno({ ...aluno, notas: novas });
+    }
+
+    function onKeyDown(e) {
+      if(e.key === "Enter")
+        avancar();
+    }
+
+    const titulos = ["Qual e o nome do aluno? ", ...DISCIPLINAS.map((d) => `Nota em ${d}`), "Qual a frequência? "];
+    const progresso = Math.round ((passo / (TOTAL_PASSOS - 1)) *100);
+
+    function renderCampo() { 
+      if(passo === 0) {
+        return (
+          <div className="form-campo">
+            <label className="form-label">Nome do aluno</label>
+            <input className="form-input" autoFocus value={aluno.nome}
+            onChange={(e) => setAluno({ ...aluno, nome: e.target.value })}
+            onKeyDown={onkeydown} placeholder="Ex: João da Silva"/>
+          </div>
+        )
+      }
+    }
   }
 }
