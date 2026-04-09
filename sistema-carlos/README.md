@@ -1,16 +1,81 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 📚 Sistema do Prof. Carlos
+ 
+Sistema web para gerenciamento de notas e frequência de alunos, desenvolvido com React + Vite.
+ 
+---
+ 
+## 🚀 Como rodar o projeto
+ 
+### Pré-requisitos
+- [Node.js](https://nodejs.org/) versão 18 ou superior
+ 
+### Passos
+ 
+```bash
+# 1. Entre na pasta do projeto
+cd sistema-carlos
+ 
+# 2. Instale as dependências
+npm install
+ 
+# 3. Rode em modo desenvolvimento
+npm run dev
+```
+ 
+Acesse **http://localhost:5173** no navegador.
+ 
+---
+ 
+## 📦 Build para produção
+ 
+```bash
+npm run build
+```
+ 
+---
+ 
+## 🗂️ Estrutura do projeto
+ 
+```
+sistema-carlos/
+│
+├── public/              # Arquivos estáticos
+│
+├── src/
+│   ├── App.jsx          # Todo o sistema: constantes, cálculos e componentes
+│   └── App.css          # Todos os estilos
+│
+├── index.html           # HTML base (não mexa)
+├── main.jsx             # Ponto de entrada (não mexa)
+└── vite.config.js       # Configuração do Vite (não mexa)
+```
+ 
+### O que está dentro do App.jsx
+ 
+| Seção | O que faz |
+|---|---|
+| `CONSTANTES` | Nomes das disciplinas e limite de frequência |
+| `FUNÇÕES DE CÁLCULO` | Média do aluno, média por disciplina, filtros |
+| `FormularioAluno` | Formulário passo a passo (um campo por vez) |
+| `TabelaResultados` | Tabela com notas, médias e status |
+| `ListasAtencao` | Painéis de destaque e alunos em risco |
+| `App` | Componente raiz que orquestra tudo |
+ 
+---
+ 
+## ✨ Funcionalidades
+ 
+- Cadastro **passo a passo** — um campo por vez para evitar erros
+- Cálculo automático de **média por aluno** e **média da turma por disciplina**
+- Destaque de alunos **acima da média** ⭐
+- Alerta de alunos com **frequência abaixo de 75%** ⚠️
+- Remoção de alunos da lista
+- Dados de exemplo pré-carregados
+ 
+---
+ 
+## 🛠️ Tecnologias
+ 
+- [React 18](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- JavaScript (ES2022)
