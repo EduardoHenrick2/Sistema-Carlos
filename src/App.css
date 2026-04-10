@@ -15,6 +15,7 @@ body {
   --msg-labbel: #94a3b8;
   --padrao-borda: #e2e8f0;
   --padrao-p: #64748b;
+  --padrao-destaque: #3b82f6;
 }
 
 /* Layout principal */
@@ -159,7 +160,7 @@ body {
 
 .progresso-fill  {
   height: 100%;
-  background: #3b82f6;
+  background: var(--padrao-destaque);
   border-radius: 999px;
   transition: width 0.3s ease;
 }
@@ -212,16 +213,69 @@ body {
 }
 
 .form-input:focus { 
-  border-color: #3b82f6; 
+  border-color: var(--padrao-destaque); 
 }
 
 .form-input-numero {
-  border-color: #3b82f6;
+  border-color: var(--padrao-destaque);
 }
 
 .form-botoes {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+}
+
+/* Botões */
+.btn-primario {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: var(--padrao-destaque);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-primario:hover {
+  background: #2563eb;
+}
+
+.btn-secundario {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--padrao-borda);
+  background: var(--padrão-background);
+  color: var(--padrao-p);
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-voltar {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--padrao-borda);
+  background: var(--padrão-background);
+  color: var(--padrao-p);
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: auto;
+}
+
+.btn-remover {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #fef2f2;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-remover:hover {
+  background: #fee2e2;
 }
 
