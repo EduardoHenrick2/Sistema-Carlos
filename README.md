@@ -38,16 +38,15 @@ npm run build
  
 ```
 sistema-carlos/
-│
-├── public/              # Arquivos estáticos
-│
-├── src/
-│   ├── App.jsx          # Todo o sistema: constantes, cálculos e componentes
-│   └── App.css          # Todos os estilos
-│
-├── index.html           # HTML base (não mexa)
-├── main.jsx             # Ponto de entrada (não mexa)
-└── vite.config.js       # Configuração do Vite (não mexa)
+├── public/              # Arquivos estáticos (ícones, imagens)
+├── src/                 # Onde o código da aplicação vive
+│   ├── App.jsx          # Todo o sistema: lógica, constantes e componentes
+│   ├── App.css          # Estilos do componente principal
+│   ├── index.css        # Estilos globais da aplicação
+│   └── main.jsx         # Ponto de entrada do React (não mexa)
+├── index.html           # HTML base da aplicação
+├── package.json         # Dependências e scripts do projeto
+└── vite.config.js       # Configuração do compilador Vite
 ```
  
 ### O que está dentro do App.jsx

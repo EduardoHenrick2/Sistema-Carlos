@@ -19,7 +19,7 @@ const ALUNOS_EXEMPLO = [
   { id: 4, nome: "Ana", notas: [4, 5, 3, 6, 5], frequencia: 60 },
 ];
 
-//Funções de calculo
+// Funções de calculo
 
 function mediaAluno(notas) {
   const soma = notas.reduce((acc, n) => acc + n, 0);
@@ -57,8 +57,8 @@ function calcResultados(alunos) {
   };
 }
 
-//Componente: Formulario aluno
-//Foi criado de passos em passos
+// Formulario aluno
+// Foi criado de passos em passos
 
 const TOTAL_PASSOS = 7; //OBJETIVO NOME +5 NOSTAS + FREQUENCIA
 const alunoVazio = () => ({ nome: "", notas: [0, 0, 0, 0, 0], frequencia: 75 });
@@ -219,6 +219,7 @@ function FormularioAluno({ onAdicionar, onCancelar }) {
 }
 
 // Tabela de Resultados
+
 function TabelaResultados({ resultado }) {
   const { alunosMedia, mediaTurma, mediasPorDisciplina } = resultado;
 
@@ -351,7 +352,7 @@ function ListaAtencao({ resultado }) {
   );
 }
 
-// Principal o App
+// App Principal
 
 export default function App() {
   const [alunos, setAlunos] = useState(ALUNOS_EXEMPLO);
