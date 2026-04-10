@@ -222,8 +222,43 @@ function FormularioAluno({ onAdicionar, onCancelar}) {
             </tbody>
           </table>
         </div>
-      )
-        
+      );
+    }
+
+    // Lista de Atenção 
+
+    function ListaAtencao({ resultado }) {
+      const { acimaMedia, frequenciaBaixa, mediaTurma } = resultado;
+
+      return (
+        <div className="lista-grid">
+          <div className="card-borda-azul">
+            <h3 className="lista-titulo lista-titulo-azul">⭐ Acima da Média ({mediaTurma})</h3>
+            {acimeMedia.length === 0 
+              ? <p className="lista-vazia">Nenhum aluno acima da média</p>
+              : acimaMedia.map((a) => (
+                <div key={a.id} className="lista-item">
+                  <strong>{a.nome}</strong>
+                  <span style={{color: "#1d4ed*", fontWeight: "700"}}>Média {a.media}</span>
+                </div>
+              ))
+            }
+          </div>
+
+          <div className="car-borda-vermelha">
+            <h3 className="lista-titulo lista-titulo-vermelha">⚠️ Frequência Abaixo de 75%</h3>
+            {frequenciaBaixa.length === 0
+              ? <p className="lista-vazio" style={{ color:"#16a34a"}}>✅ Todos com frequência adequada!</p>
+              : frequenciaBaixa.map((a) => (
+                <div key={a.id} className="lista-item lista-item-risco">
+                  <strong>{a.nome}</strong>
+                  <span style={{ color: "#b91c1c", fontWeight: 700}}>{a.frequencia}%</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      );
     }
   }
 
