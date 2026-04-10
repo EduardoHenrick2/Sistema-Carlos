@@ -279,3 +279,37 @@ body {
   background: #fee2e2;
 }
 
+/* Tabela */
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--padrao-p);
+  font-size: 12px;
+  border-bottom: 2px solid var(--padrao-borda);
+  white-space: nowrap;
+}
+
+.td {
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tr-risco {
+  background: #fff5f5;
+}
+
+.tr-media-turma {
+  border-top: 2px solid var(--padrao-borda);
+  background: #f8fafc;
+}
