@@ -104,16 +104,126 @@ function FormularioAluno({ onAdicionar, onCancelar}) {
     const progresso = Math.round ((passo / (TOTAL_PASSOS - 1)) *100);
 
     function renderCampo() { 
-      if(passo === 0) {
+      if(passo === 0)
         return (
           <div className="form-campo">
             <label className="form-label">Nome do aluno</label>
             <input className="form-input" autoFocus value={aluno.nome}
-            onChange={(e) => setAluno({ ...aluno, nome: e.target.value })}
-            onKeyDown={onkeydown} placeholder="Ex: João da Silva"/>
+              onChange={(e) => setAluno({ ...aluno, nome: e.target.value })}
+              onKeyDown={onkeyDown} placeholder="Ex: João da Silva"/>
           </div>
-        )
+        );
+
+        if(passo >= 1 && passo <= 5) return (
+          <div className="form-campo">
+            <label className="form-label">{`Nota em ${DISCIPLINAS[passo - 1]}`}</label>
+            <input className="form-input" autoFocus value={aluno.notas[passo - 1]}
+              onChange={(e) => setNota(passo - 1, e.target.value)}
+              onKeyDown={onKeyDown} placeholder="Ex: 7.5"/>
+          </div>
+        );
+
+        if(passo === 6) return (
+          <div className="form-campo">
+            <label className="form-label">Frequência de {aluno.nome}</label>
+            <div style={{display: "flex" , alignItems: "center", gap: 10}}>
+              <input className="form-imput form-imput-numero" auto focus type="number" min={0} max={100}
+              value={aluno.frequencia}
+              onChange={(e) => setAluno({ ...aluno, frequencia: e.target.value})}
+              onkeyDown={onkeyDown} />
+              <span style={{fontSize: 22, color: "#64748b"}}>%</span>
+            </div>
+            <span className="form-hint">de 0 a 100</span> 
+          </div>
+        );
       }
+      return (
+        <div className="card">
+          <div className="progresso-fundo">
+            <div className="progresso-fill" style={{ width: `${progresso}%` }} />
+          </div>
+          <p className="form-indicador">Passo {passo  + 1} de {TOTAL_PASSOS}</p>
+          <H3 className="form-erro">⚠️ {erro}</H3>
+        {renderCampo()}
+        {erro && <p className="form-erro">⚠️ {erro}</p>}
+        <div className="form-botoes">
+          {passo > 0 && <button className="form-btn" onClick={voltar}>Voltar</button>}
+          <button className="bnt-voltar" onClick={voltar}>← Voltar</button>
+          <button className="btn-primario" onClick={onCancelar}>Cancelar</button>
+          <button className="btn-primario" onClick={avancar}>
+            {passo === TOTAL_PASSOS - 1 ? "Adicionar" : "Avançar →"}
+          </button>
+        </div>
+        </div>
+      );
+    }
+
+
+    // Tabela de Resultados
+
+    function TabelaResultados({ resultado}) {
+      const { alunosMedia, mediaTurma, mediasPorDisciplina } = resultado;
+
+      return (
+        <div style={{ overflowX: "auto"}}>
+          <table className="Tabela">
+            <thead>
+              <tr>
+                <th className="th">Aluno</th>
+                {DISCIPLINAS.map((d, i) => <th key={i} className="th">{d}</th>)}
+                <th className="th">Média</th>
+                <th className="th">Frequência</th>
+                <th className="th">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {alunosMedia.map((aluno) => {
+                const emRisco = aluno.frequencia < FREQUENCIA_MINIMA;
+                const destaque = parseFloat(aluno.media) > parseFloat(mediaTurma);
+                return (
+                  <tr key={aluno.id} className={`tr ${emRisco ? "tr-risco" : ""}`}>
+                    <td className="td" style={{ fontWeight: 600 }}>{aluno.nome}</td>
+                    {aluno.notas.map((notas, i) => (
+                      <td key={i} className="td">
+                        <span className={`badge ${nota >= 7 ? "badge-verde" : nota >= 5 ? "badge-amarelo" : "badge-vermelho"}`}>
+                          {nota}
+                        </span>
+                      </td>
+                    ))}
+                    <td className="td">
+                      <span className={`badge ${destaque ? "badge-azul" : "badge-cinza"}`}>
+                        {alunos.media} {destaque && "⭐"}
+                      </span>
+                    </td>
+                    <td className={`badge ${emRisco ? "badge-vermelho" : "badge-verde"}`} style={{ fontWeight: 700}}>
+                      {aluno.frequencia}%
+                    </td>
+                    <td className="td">
+                      {emRisco
+                      ? <span className="tag-vermelho">⚠️ Freq. baixa</span>
+                      : destaque
+                      ? <span className="tag-azul">⭐ Destaque</span>
+                      : <span className="tag-cinza">Regular</span>
+                      }
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr className="tr-media-turma">
+                <td className="td" style={{fontWeight: 700, color: "#64748b"}}>Média da Turma</td>
+                {mediasPorDisciplina.map((media, i) => (
+                  <td key={i} className="td">
+                    <span className="badge badge-roxo" style={{fontWeight: 700}}>{m}</span>
+                  </td>
+                ))}
+                <td className="td" style={{ fontWeight: 800, color: "#3730a3"}}>{mediaTurma}</td>
+                <td className="td" colSpan={2}/>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )
+        
     }
   }
-}
+
