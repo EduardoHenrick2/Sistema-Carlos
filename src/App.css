@@ -94,3 +94,58 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.06); 
   margin-bottom: 20px; 
 }
+
+.card h2 { 
+  font-size: 17px; 
+  font-weight: 700; 
+  margin: 0 0 16px; 
+}
+
+.card-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 16px; 
+}
+
+.card-header h2 { 
+  margin: 0; 
+}
+
+/* Lista de alunos */
+.lista-alunos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-aluno {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid var(--padrao-borda);
+  border-radius: 10px;
+}
+
+.aluno-nome {
+  font-weight: 700;
+  min-width: 120px;
+}
+
+.info-aluno {
+  font-size: 13px;
+  color: var(--padrao-p);
+  flex: 1;
+}
+
+.lista-vazia-msg {
+  color: var(--msg-labbel);
+  text-align: center;
+  padding: 32px 0;
+}
+
