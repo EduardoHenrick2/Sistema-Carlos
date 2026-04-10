@@ -26,13 +26,13 @@ function mediaAluno(notas) {
   return (soma / notas.length).toFixed(1);
 }
 
-function mediaDisciplina(anulos) {
-  const notas = ALUNOS_EXEMPLO.map((a) => a.notas[i]);
+function mediaDisciplina(alunos, indice) {
+  const notas = alunos.map((a) => a.notas[indice]);
   const soma = notas.reduce((acc, n) => acc + n, 0);
-  return (soma / alinos.length).toFixed(1);
+  return (soma / alunos.length).toFixed(1);
 }
 
-function calcResultados(alunos) {
+function calcularResultados(alunos) {
   const alunosMedia = alunos.map((a) => ({ ...a, media: mediaAluno(a.notas) }));
   const somaMedias = alunosMedia.reduce(
     (acc, a) => acc + parseFloat(a.media),
@@ -40,9 +40,9 @@ function calcResultados(alunos) {
   );
   const mediaTurma = (somaMedias / alunos.length).toFixed(1);
   const mediasPorDisciplina = DISCIPLINAS.map((_, i) =>
-    mediaDisciplina(anulos, i),
+    mediaDisciplina(alunos, i),
   );
-  const acimeMedia = alunosMedia.filter(
+  const acimaMedia = alunosMedia.filter(
     (a) => parseFloat(a.media) > parseFloat(mediaTurma),
   );
   const frequenciaBaixa = alunosMedia.filter(
@@ -52,7 +52,7 @@ function calcResultados(alunos) {
     alunosMedia,
     mediaTurma,
     mediasPorDisciplina,
-    acimeMedia,
+    acimaMedia,
     frequenciaBaixa,
   };
 }
@@ -60,7 +60,7 @@ function calcResultados(alunos) {
 // Formulario aluno
 // Foi criado de passos em passos
 
-const TOTAL_PASSOS = 7; //OBJETIVO NOME +5 NOSTAS + FREQUENCIA
+const TOTAL_PASSOS = 7;
 const alunoVazio = () => ({ nome: "", notas: [0, 0, 0, 0, 0], frequencia: 75 });
 
 function FormularioAluno({ onAdicionar, onCancelar }) {
@@ -73,149 +73,150 @@ function FormularioAluno({ onAdicionar, onCancelar }) {
       if (!aluno.nome.trim()) {
         setErro("Digite o nome do aluno");
         return false;
-      } else if ((passo) => 1 && passo <= 5) {
-        const nota = aluno.notas[passo - 1];
-        if (isNaN(nota) || nota < 0 || nota > 10) {
-          setErro("A nota deve ser entre 0 e 10.");
-          return false;
-        }
-      } else if (passo === 6) {
-        if (
-          isNaN(aluno.frequencia) ||
-          aluno.frequencia < 0 ||
-          aluno.frequencia > 100
-        ) {
-          setErro("A frequência deve ser entre 0 e 100.");
-          return false;
-        }
       }
-      setErro("");
-      return true;
-    }
-
-    function avancar() {
-      if (!validarPasso()) return;
-      if (passo < TOTAL_PASSOS - 1) {
-        setPasso(Passo + 1);
-      } else {
-        onAdicionar({
-          id: Date.now(),
-          nome: aluno.nome.trim(),
-          notas: aluno.notas.map(Number),
-          frequencia: Number(aluno.frequencia),
-        });
-        setAluno(alunoVazio());
-        setPasso(0);
+    } else if (passo >= 1 && passo <= 5) {
+      const nota = aluno.notas[passo - 1];
+      if (isNaN(nota) || nota < 0 || nota > 10) {
+        setErro("A nota deve ser entre 0 e 10.");
+        return false;
+      }
+    } else if (passo === 6) {
+      if (
+        isNaN(aluno.frequencia) ||
+        aluno.frequencia < 0 ||
+        aluno.frequencia > 100
+      ) {
+        setErro("A frequência deve ser entre 0 e 100.");
+        return false;
       }
     }
-
-    function voltar() {
-      setErro("");
-      setPasso(passo - 1);
+    setErro("");
+    return true;
+  }
+  function avancar() {
+    if (!validarPasso()) return;
+    if (passo < TOTAL_PASSOS - 1) {
+      setPasso(passo + 1);
+    } else {
+      onAdicionar({
+        id: Date.now(),
+        nome: aluno.nome.trim(),
+        notas: aluno.notas.map(Number),
+        frequencia: Number(aluno.frequencia),
+      });
+      setAluno(alunoVazio());
+      setPasso(0);
     }
+  }
 
-    function setNota(i, valor) {
-      const novas = { ...aluno.notas };
-      novas[i] = valor;
-      setAluno({ ...aluno, notas: novas });
-    }
+  function voltar() {
+    setErro("");
+    setPasso(passo - 1);
+  }
 
-    function onKeyDown(e) {
-      if (e.key === "Enter") avancar();
-    }
+  function setNota(i, valor) {
+    const novas = [...aluno.notas];
+    novas[i] = valor;
+    setAluno({ ...aluno, notas: novas });
+  }
 
-    const titulos = [
-      "Qual e o nome do aluno? ",
-      ...DISCIPLINAS.map((d) => `Nota em ${d}`),
-      "Qual a frequência? ",
-    ];
-    const progresso = Math.round((passo / (TOTAL_PASSOS - 1)) * 100);
+  function onKeyDown(e) {
+    if (e.key === "Enter") avancar();
+  }
 
-    function renderCampo() {
-      if (passo === 0)
-        return (
-          <div className="form-campo">
-            <label className="form-label">Nome do aluno</label>
-            <input
-              className="form-input"
-              autoFocus
-              value={aluno.nome}
-              onChange={(e) => setAluno({ ...aluno, nome: e.target.value })}
-              onKeyDown={onkeyDown}
-              placeholder="Ex: João da Silva"
-            />
-          </div>
-        );
+  const titulos = [
+    "Qual e o nome do aluno? ",
+    ...DISCIPLINAS.map((d) => `Nota em ${d}`),
+    "Qual a frequência? ",
+  ];
+  const progresso = Math.round((passo / (TOTAL_PASSOS - 1)) * 100);
 
-      if (passo >= 1 && passo <= 5)
-        return (
-          <div className="form-campo">
-            <label className="form-label">{`Nota em ${DISCIPLINAS[passo - 1]}`}</label>
-            <input
-              className="form-input"
-              autoFocus
-              value={aluno.notas[passo - 1]}
-              onChange={(e) => setNota(passo - 1, e.target.value)}
-              onKeyDown={onKeyDown}
-              placeholder="Ex: 7.5"
-            />
-          </div>
-        );
-
-      if (passo === 6)
-        return (
-          <div className="form-campo">
-            <label className="form-label">Frequência de {aluno.nome}</label>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <input
-                className="form-imput form-imput-numero"
-                auto
-                focus
-                type="number"
-                min={0}
-                max={100}
-                value={aluno.frequencia}
-                onChange={(e) =>
-                  setAluno({ ...aluno, frequencia: e.target.value })
-                }
-                onkeyDown={onkeyDown}
-              />
-              <span style={{ fontSize: 22, color: "#64748b" }}>%</span>
-            </div>
-            <span className="form-hint">de 0 a 100</span>
-          </div>
-        );
-    }
-    return (
-      <div className="card">
-        <div className="progresso-fundo">
-          <div className="progresso-fill" style={{ width: `${progresso}%` }} />
+  function renderCampo() {
+    if (passo === 0)
+      return (
+        <div className="form-campo">
+          <label className="form-label">Nome do aluno</label>
+          <input
+            className="form-input"
+            autoFocus
+            value={aluno.nome}
+            onChange={(e) => setAluno({ ...aluno, nome: e.target.value })}
+            onKeyDown={onKeyDown}
+            placeholder="Ex: João da Silva"
+          />
         </div>
-        <p className="form-indicador">
-          Passo {passo + 1} de {TOTAL_PASSOS}
-        </p>
-        <H3 className="form-erro">⚠️ {erro}</H3>
-        {renderCampo()}
-        {erro && <p className="form-erro">⚠️ {erro}</p>}
-        <div className="form-botoes">
-          {passo > 0 && (
-            <button className="form-btn" onClick={voltar}>
-              Voltar
-            </button>
-          )}
-          <button className="bnt-voltar" onClick={voltar}>
+      );
+
+    if (passo >= 1 && passo <= 5)
+      return (
+        <div className="form-campo">
+          <label className="form-label">{`Nota em ${DISCIPLINAS[passo - 1]}`}</label>
+          <input
+            className="form-input"
+            autoFocus
+            value={aluno.notas[passo - 1]}
+            onChange={(e) => setNota(passo - 1, e.target.value)}
+            onKeyDown={onKeyDown}
+            placeholder="Ex: 7.5"
+          />
+        </div>
+      );
+
+    if (passo === 6)
+      return (
+        <div className="form-campo">
+          <label className="form-label">Frequência de {aluno.nome}</label>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <input
+              className="form-input form-input-numero"
+              autoFocus
+              type="number"
+              min={0}
+              max={100}
+              value={aluno.frequencia}
+              onChange={(e) =>
+                setAluno({ ...aluno, frequencia: e.target.value })
+              }
+              onKeyDown={onKeyDown}
+            />
+            <span style={{ fontSize: 22, color: "#64748b" }}>%</span>
+          </div>
+          <span className="form-hint">de 0 a 100</span>
+        </div>
+      );
+  }
+  return (
+    <div className="card">
+      <div className="progresso-fundo">
+        <div className="progresso-fill" style={{ width: `${progresso}%` }} />
+      </div>
+      <p className="form-indicador">
+        Passo {passo + 1} de {TOTAL_PASSOS}
+      </p>
+      <h2 style={{ marginBottom: "15px", color: "#1e293b" }}>
+        {titulos[passo]}
+      </h2>
+      {erro && <h3 className="form-erro">⚠️ {erro}</h3>}
+      {renderCampo()}
+      <div className="form-botoes">
+        {passo > 0 && (
+          <button className="btn-voltar" onClick={voltar}>
             ← Voltar
           </button>
-          <button className="btn-primario" onClick={onCancelar}>
-            Cancelar
-          </button>
-          <button className="btn-primario" onClick={avancar}>
-            {passo === TOTAL_PASSOS - 1 ? "Adicionar" : "Avançar →"}
-          </button>
-        </div>
+        )}
+        <button
+          className="btn-primario"
+          onClick={onCancelar}
+          style={{ backgroundColor: "#ef4444" }}
+        >
+          Cancelar
+        </button>
+        <button className="btn-primario" onClick={avancar}>
+          {passo === TOTAL_PASSOS - 1 ? "Adicionar" : "Avançar →"}
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 // Tabela de Resultados
@@ -251,9 +252,9 @@ function TabelaResultados({ resultado }) {
                 {aluno.notas.map((notas, i) => (
                   <td key={i} className="td">
                     <span
-                      className={`badge ${nota >= 7 ? "badge-verde" : nota >= 5 ? "badge-amarelo" : "badge-vermelho"}`}
+                      className={`badge ${notas >= 7 ? "badge-verde" : notas >= 5 ? "badge-amarelo" : "badge-vermelho"}`}
                     >
-                      {nota}
+                      {notas}
                     </span>
                   </td>
                 ))}
@@ -261,7 +262,7 @@ function TabelaResultados({ resultado }) {
                   <span
                     className={`badge ${destaque ? "badge-azul" : "badge-cinza"}`}
                   >
-                    {alunos.media} {destaque && "⭐"}
+                    {aluno.media} {destaque && "⭐"}
                   </span>
                 </td>
                 <td
@@ -289,7 +290,7 @@ function TabelaResultados({ resultado }) {
             {mediasPorDisciplina.map((media, i) => (
               <td key={i} className="td">
                 <span className="badge badge-roxo" style={{ fontWeight: 700 }}>
-                  {m}
+                  {media}
                 </span>
               </td>
             ))}
@@ -315,13 +316,13 @@ function ListaAtencao({ resultado }) {
         <h3 className="lista-titulo lista-titulo-azul">
           ⭐ Acima da Média ({mediaTurma})
         </h3>
-        {acimeMedia.length === 0 ? (
+        {acimaMedia.length === 0 ? (
           <p className="lista-vazia">Nenhum aluno acima da média</p>
         ) : (
           acimaMedia.map((a) => (
             <div key={a.id} className="lista-item">
               <strong>{a.nome}</strong>
-              <span style={{ color: "#1d4ed*", fontWeight: "700" }}>
+              <span style={{ color: "#1d4ed8", fontWeight: "700" }}>
                 Média {a.media}
               </span>
             </div>
@@ -421,7 +422,7 @@ export default function App() {
           ) : (
             <ul className="lista-alunos">
               {alunos.map((a) => (
-                <li key={aluno.id} className="item-aluno">
+                <li key={a.id} className="item-aluno">
                   <span className="aluno-nome">{a.nome}</span>
                   <span className="aluno-info">
                     Notas: {a.notas.join(", ")} · Frequência: {a.frequencia}
@@ -429,7 +430,7 @@ export default function App() {
                   </span>
                   <button
                     className="btn-remover"
-                    onClick={() => removerAliuno(a.id)}
+                    onClick={() => removerAluno(a.id)}
                     title="Remover aluno"
                   >
                     ✕
